@@ -26,6 +26,14 @@ class User {
     }
   }
 
+  void betWon(Bet bet){
+      balance
+  }
+
+  void betLost(Bet bet){
+
+  }
+
   // Method to add funds
   void addFunds(double amount) {
     balance += amount;
