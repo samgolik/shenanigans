@@ -1,78 +1,82 @@
 import 'package:flutter/material.dart';
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+class BottomNavBar extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onItemTapped;
+  final List<Widget> widgetOptions;
 
-  @override
-  State<BottomNavBar> createState() => BottomNavBarState();
-}
-
-class BottomNavBarState extends State<BottomNavBar> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'History',
-      style: optionStyle,
-    ),
-    Text(
-      'Groups',
-      style: optionStyle,
-    ),
-    Text(
-      'Bets',
-      style: optionStyle,
-    ),
-    Text(
-      'Idk',
-      style: optionStyle,
-    ),
-    Text(
-      'Settings',
-      style: optionStyle,
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  const BottomNavBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemTapped,
+    required this.widgetOptions,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: widgetOptions.elementAt(selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'History',
-            backgroundColor: Colors.purple,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          onItemTapped(2); // Set to "Bet" when floating button is pressed
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.purple,
+        elevation: 8,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.groups),
-            label: 'Groups',
+          child: BottomAppBar(
+            height: 40,
+            shadowColor: Colors.black.withOpacity(1.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.home),
+                  onPressed: () {
+                    onItemTapped(0);
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.groups),
+                  onPressed: () {
+                    onItemTapped(1);
+                  },
+                ),
+                const SizedBox(width: 40), // Space for the floating button
+                IconButton(
+                  icon: const Icon(Icons.history),
+                  onPressed: () {
+                    onItemTapped(3);
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () {
+                    onItemTapped(4);
+                  },
+                ),
+              ],
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Bets',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Idk',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.purple[800],
-        onTap: _onItemTapped,
+        ),
       ),
     );
   }
