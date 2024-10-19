@@ -1,0 +1,5 @@
+enum Bettype {
+  moneyline,
+  higherlower
+  
+}
